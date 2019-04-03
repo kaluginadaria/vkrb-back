@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="formula">
+    <div class="logo"></div>
+
+    {% if formula.photo %}
+        <img src="{{ formula.photo.file_url }}" class="formula__img-content"/>
+    {% endif %}
+    <div class="formula__title">{{ formula.title }}</div>
+    <div class="formula__title">Параметры:</div>
+    <div class="formula__input">
+        {% for item in formula_data.input %}
+            <div class="formula__param">{{ item.title }}, {{ item.symbol }}{% if item.value %}: <span class="formula__value">{{ item.value|floatformat:-2 }}</span> {{ item.dimension }}{% endif %}</div>
+        {% endfor %}
+    </div>
+    {% if formula_data.constant %}
+        <div class="formula__title">Константы:</div>
+        <div class="formula__input">
+            {% for item in formula_data.constant %}
+                <div class="formula__param">{{ item.title }}, {{ item.symbol }}{% if item.value %}: <span class="formula__value">{{ item.value | floatformat:-2}}</span> {{ item.dimension }}{% endif %}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="formula__title">Результат:</div>
+    <div class="formula__output">
+        {% for item in formula_data.output %}
+            <div class="formula__param">{{ item.title }}, {{ item.symbol }}{% if item.value %}: <span class="formula__value">{{ item.value | floatformat:-2 }}</span> {{ item.dimension }}{% endif %}</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

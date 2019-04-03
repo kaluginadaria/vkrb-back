@@ -1,0 +1,17 @@
+<div class="q">
+    <div class="q__subject">Ответ эксперта:</div>
+    <div class="q__text-vkrb">{{ recourse.answer }}</div>
+    {% if recourse.photo %}
+        <div class="q__img-wrapper">
+            <img class="q__img-content" src={{ recourse.photo.file_url }}>
+        </div>
+    {% endif %}
+    {% if recourse.link %}
+        <div class="q__text-vkrb">Ссылка на официальный документ - {{ recourse.link }}</div>
+    {% endif %}
+    <div class="q__user-wrapper">
+        <div class="q__user-name">{{ recourse.expert.full_name }}</div>
+        <div class="q__user-date">{{ recourse.reaction_date }}</div>
+    </div>
+    <hr>
+</div>

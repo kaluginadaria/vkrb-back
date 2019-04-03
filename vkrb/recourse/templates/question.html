@@ -1,0 +1,17 @@
+<div class="q">
+    {% if subject %}
+        <div class="q__subject">{{ recourse.subject }}</div>
+    {% endif %}
+    <div class="q__text-wrapper">
+        <div class="q__text-vkrb">{{ recourse.question }}</div>
+        <div class="q__likes">
+            <span class="q__likes-count">{{ recourse.get_likes }}</span>
+            <div class="q__likes-logo"></div>
+        </div>
+    </div>
+    <div class="q__user-wrapper">
+        <div class="q__user-name">{{ recourse.user.get_full_name }}</div>
+        <div class="q__user-date">{{ recourse.created }}</div>
+    </div>
+    <hr>
+</div>

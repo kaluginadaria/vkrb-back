@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block body %}
+
+    <div class="q__main-title">Специализация обращения - {{ recourse.specialty }}</div>
+
+    {% include 'question.html' with recourse=recourse subject=True %}
+
+    {% if recourse.answer %}
+        {% include 'answer.html' with recourse=recourse %}
+    {% endif %}
+
+    <div class="q__main-title">5 самых популярных комментариев</div>
+
+    {% for recourse in children %}
+        {% include 'question.html' with recourse=recourse %}
+
+        {% if recourse.answer %}
+            {% include 'answer.html' with recourse=recourse %}
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock %}

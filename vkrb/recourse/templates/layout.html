@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% for url in css_urls %}
+        <link type="text/css" href="{{ url }}" rel="stylesheet"/>
+    {% endfor %}
+</head>
+
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>
+

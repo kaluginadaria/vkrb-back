@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block body %}
+    <div class="literature">
+        <div class="logo"></div>
+
+        <div class="literature__img-wrapper">
+                        <img class="literature__img-content" src={{ literature.photo.file_url }}>
+
+        </div>
+        <div class="literature__title">{{ literature.title }}</div>
+        {% if literature.author %}
+            <div class="literature__subtitle">Автор(-ы): {{ literature.author }}</div>
+        {% endif %}
+
+        {% if literature.author %}
+            <div class="literature__subtitle">Год издания: {{ literature.date_of_issued }}</div>
+        {% endif %}
+
+        {% if literature.author %}
+            <div class="literature__subtitle">Ключевые слова: {{ literature.keywords }}</div>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="catalog-item">
+    <div class="logo"></div>
+    <div class="catalog-item__title">{{ object.title }}</div>
+    <img src="{{ object.photo.file_url }}" class="catalog-item__img-content"/>
+    <div class="catalog-item__subtitle">Категория:</div>
+    <div>{{ object.type.title }}</div>
+    {% if object.target %}
+        <div class="catalog-item__subtitle">Цель технологии:</div>
+        <div>{{ object.target }}</div>
+    {% endif %}
+    {% if object.advantages %}
+        <div class="catalog-item__subtitle">Преимущества технологии:</div>
+        <div>{{ object.advantages }}</div>
+    {% endif %}
+    {% if object.analogs %}
+        <div class="catalog-item__subtitle">Аналоги в РФ:</div>
+        <div>{{ object.analogs }}</div>
+    {% endif %}
+    {% if object.description %}
+        <div class="catalog-item__subtitle">Описание:</div>
+        <div>{{ object.description }}</div>
+    {% endif %}
+</div>
+{% endblock %}

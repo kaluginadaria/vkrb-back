@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block body %}
+    <div class="newsitem">
+        <div class="logo"></div>
+        <div class="newsitem__subject">{{ newsitem.title }}</div>
+        {% for photo in photos %}
+            <div class="newsitem__img-wrapper">
+                <img class="newsitem__img-content" src={{ photo.file_url }}>
+            </div>
+        {% endfor %}
+        <div class="newsitem__text-vkrb">{{ newsitem.text }}</div>
+    </div>
+
+{% endblock %}

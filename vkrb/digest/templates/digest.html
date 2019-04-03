@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+{% block body %}
+    <div class="digest">
+        <div class="logo"></div>
+        <div class="digest__title">{{ article.title }}</div>
+        <div class="digest__subtitle">Дайджест: {{ article.digest }}</div>
+        {% for photo in photos %}
+            <div class="digest__img-wrapper">
+                <img class="digest__img-content" src={{ photo.file_url }}>
+
+            </div>
+        {% endfor %}
+        <div class="digest__text-vkrb">{{ article.body }}</div>
+    </div>
+
+{% endblock %}

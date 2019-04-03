@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block body %}
+    <div class="science_article">
+        <div class="logo"></div>
+        <div class="science_article__title">{{ article.title }}</div>
+
+        <div class="science_article__img-wrapper">
+              <img class="science_article__img-content" src={{ article.photo.file_url }}>
+
+        </div>
+
+
+        {% if article.date_of_issued %}
+            <div class="science_article__subtitle">Год издания: {{ article.date_of_issued }}</div>
+
+        {% endif %}
+        {% if article.author %}
+            <div class="science_article__subtitle">Автор(-ы): {{ article.author }}</div>
+
+        {% endif %}
+        {% if article.keywords %}
+            <div class="science_article__subtitle">Ключевые слова: {{ article.keywords }}</div>
+            <br>
+        {% endif %}
+        {% if article.attachment %}
+            <hr>
+            <div class="science_article__block">Прикрепление:</div>
+            <div class="science_article__img-wrapper">
+                            <img class="science_article__img-content" src={{ article.attachment.file_url }}>
+
+            </div>
+        {% endif %}
+        {% if article.problems %}
+            <hr>
+            <div class="science_article__block">Проблематика:</div>
+            <div class="science_article__text-vkrb">{{ article.problems }}</div>
+            <hr>
+        {% endif %}
+        {% if article.decision %}
+            <div class="science_article__block">Решение:</div>
+            <div class="science_article__text-vkrb">{{ article.decision }}</div>
+            <hr>
+        {% endif %}
+        {% if article.result %}
+            <div class="science_article__block">Результат:</div>
+            <div class="science_article__text-vkrb">{{ article.result }}</div>
+            <hr>
+        {% endif %}
+        {% if article.body %}
+            <div class="science_article__block">Текст статьи:</div>
+            <div class="science_article__text-vkrb">{{ article.body }}</div>
+            <hr>
+        {% endif %}
+    </div>
+{% endblock %}
