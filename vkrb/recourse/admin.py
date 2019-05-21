@@ -58,7 +58,7 @@ class RecourseAdmin(admin.ModelAdmin):
                 obj.expert = user.expert
                 if obj.reaction_date is None:
                     obj.reaction_date = datetime.datetime.now()
-                    NewRecourseAnswerPush(obj).send()
+                    # NewRecourseAnswerPush(obj).send()
         obj.save()
 
     comments.short_description = 'Кол-во комментариев'

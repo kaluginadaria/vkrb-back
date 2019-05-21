@@ -1,0 +1,10 @@
+как авторизоваться 
+1. создать приложение client type confidential, grant type: rsource-owner
+2. post http://127.0.0.1:8000/api/o.token/ with basic authorization client id+client secret 
+body:
+grant-type: password
+username:
+password:
+
+3. при каждом запросе добавляем Authorization=Bearer VuWlxdHoVvyY3Ukmn1XcEovMR8CZtY
+

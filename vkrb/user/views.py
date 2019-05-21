@@ -60,7 +60,7 @@ class UserUpdatePermsView(CsrfExemptMixin, PermissionsMixin, BaseView):
             .exists()
         if moderating:
             return {'status_upd': 'moderating'}
-        if global_block is False and is_user_blocked is False:
+        if not global_block and not is_user_blocked:
             return {'status_upd': 'opened'}
         else:
             return {'status_upd': 'closed'}

@@ -1,5 +1,6 @@
 import oauth2_provider.views as oauth2_views
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
@@ -36,6 +37,9 @@ urlpatterns = [
     path('api/', include('vkrb.application.api_urls')),
     re_path(r'^chaining/', include('smart_selects.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
     from revproxy.views import ProxyView

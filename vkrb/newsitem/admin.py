@@ -2,7 +2,7 @@ from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminMixin
 from django.contrib import admin
 
 from vkrb.client.push import NewNewsItemPush
-from vkrb.newsitem.forms import NewsItemAttachmentAdminForm
+from vkrb.newsitem.forms import NewsItemAttachmentAdminForm, NewsForm
 from vkrb.newsitem.models import NewsItem, CategoryNewsItem
 
 
@@ -20,11 +20,12 @@ class NewsItemAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     search_fields = ('title', 'text')
     readonly_fields = ('image_tag',)
+    form = NewsForm
 
     def save_model(self, request, obj, form, change):
         newsitem = super().save_model(request, obj, form, change)
-        if change is False:
-            NewNewsItemPush(obj).send()
+        # if change is False:
+        #     NewNewsItemPush(obj).send()
 
 
 @admin.register(CategoryNewsItem)

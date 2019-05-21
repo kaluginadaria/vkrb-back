@@ -96,7 +96,7 @@ class RecourseInlineForm(BaseInlineFormSet):
                     old_answer = form.initial.get('answer')
                     if expert and old_answer in ['', None] and obj.reaction_date is None:
                         obj.reaction_date = datetime.datetime.now()
-                        NewRecourseAnswerPush(obj).send()
+                        # NewRecourseAnswerPush(obj).send()
                     if obj.expert is None and expert:
                         obj.expert = expert
                 self.changed_objects.append((obj, form.changed_data))

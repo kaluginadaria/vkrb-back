@@ -3,7 +3,7 @@ from django import forms
 from django.urls import reverse
 
 from vkrb.application.settings import MAILGUN_SERVER_NAME, MAILGUN_ACCESS_KEY, SENDER_EMAIL
-from vkrb.core.utils import build_url
+from vkrb.core.utils import build_url, build_url_with_domain
 from vkrb.feedback.models import FeedbackItem, InCharge
 
 
@@ -17,7 +17,7 @@ class FeedbackForm(forms.ModelForm):
         url = reverse(
             'admin:{0}_{1}_change'.format(self.instance._meta.app_label, self.instance._meta.model_name),
             args=(self.instance.pk,))
-        admin_url = build_url(url)
+        admin_url = build_url_with_domain(url)
         requests.post(
             "https://api.mailgun.net/v3/{}/messages".format(MAILGUN_SERVER_NAME),
             auth=("api", MAILGUN_ACCESS_KEY),

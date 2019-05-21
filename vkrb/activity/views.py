@@ -25,14 +25,22 @@ class GiListView(ListView):
         return serializer_kwargs
 
 
-
-
 class SiListView(ListView):
+    class Form(forms.Form):
+        gi = forms.ModelChoiceField(queryset=GiItem.objects.all(), required=False)
+
     authorized_permission = (PermissionsModelMixin.Permission.R,)
     unauthorized_permission = (PermissionsModelMixin.Permission.R,)
     paginator = LimitOffsetFullPaginator
     model = SiItem
     serializer = ShortActivitySiItemSerializer
+    args_form = Form
+
+    def get_queryset(self):
+        id_gi = self.request_args.get('gi')
+        if id_gi:
+            return self.model.objects.filter(gi=id_gi).order_by('id')
+        return self.model.objects.all().order_by('id')
 
     def get_serializer_kwargs(self, obj, **kwargs):
         serializer_kwargs = super().get_serializer_kwargs(obj, **kwargs)

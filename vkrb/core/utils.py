@@ -53,6 +53,11 @@ def queryset_by_chunks(queryset, chunk_size):
 
 
 def build_url(url):
+    url = url.strip('/ ')
+    return f'/{url}'
+
+
+def build_url_with_domain(url):
     schema = settings.SCHEMA.strip('/ ')
     domain = settings.DOMAIN.strip('/ ')
     url = url.strip('/ ')

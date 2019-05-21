@@ -114,10 +114,10 @@ class BasePush():
         else:
             request['registration_ids'] = recipients
 
-        if async:
-            send_notification.apply_async(args=[request, ])
-        else:
-            NotificationFirebaseMethod(**request).execute()
+        # if async:
+        #     send_notification.apply_async(args=[request, ])
+        # else:
+        #     NotificationFirebaseMethod(**request).execute()
 
 
 class NewNewsItemPush(BasePush):

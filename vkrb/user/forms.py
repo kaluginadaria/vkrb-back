@@ -32,7 +32,7 @@ class UserAdminChangedForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit)
         if not instance.status == StatusType.UNCHECKED:
-            NewUserChangedItemPush(instance).send()
+            # NewUserChangedItemPush(instance).send()
             if instance.is_status_set is False:
                 if instance.status == StatusType.APPROVED:
                     user = self.instance.user

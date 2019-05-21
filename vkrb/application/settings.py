@@ -137,6 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
 PLATFORM_CONFIG_NAME = 'vkrb.conf'
 production_config = os.path.join('/etc', 'vkrb', PLATFORM_CONFIG_NAME)
@@ -148,7 +149,7 @@ config.read(config_path)
 
 SECRET_KEY = config.get('common', 'secret_key', fallback='my-secret-key')
 DEBUG = config.getboolean('common', 'debug', fallback=True)
-DOMAIN = config.get('common', 'domain', fallback='127.0.0.1:8000')
+DOMAIN = config.get('common', 'domain', fallback='192.168.1.6:8000')#192.168.1.6:8000
 SCHEMA = config.get('common', 'schema', fallback='http')
 
 WEBPACK_LOADER = {

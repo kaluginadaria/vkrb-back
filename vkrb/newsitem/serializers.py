@@ -12,9 +12,17 @@ class NewsItemSerializer(ModelSerializer):
     main_photo = SerializerField(source='get_main_photo')
     is_fav = SerializerField(source='get_fav')
     category = SerializerField(source='get_category')
+    keywords = SerializerField(source='get_keywords')
+
 
     class Meta:
         model = NewsItem
+        exclude = ('keywords',)
+
+
+
+    def get_keywords(self, obj):
+        return obj.keywords.split(' ')
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
