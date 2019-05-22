@@ -29,7 +29,7 @@ class GiItem(SearchModelMixin, models.Model):
                                verbose_name='Историческая справка')
     contact_info = models.TextField(null=True, blank=True,
                                     verbose_name='Контактная информация')
-    pdf = models.ForeignKey(Attachment, null=True, verbose_name=u'PDF',
+    pdf = models.ForeignKey(Attachment, null=True, blank=True, verbose_name=u'PDF',
                             on_delete=models.SET_NULL, related_name='gi_pdf'
                             )
     is_actual = models.BooleanField(default=True)
