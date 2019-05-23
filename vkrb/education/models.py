@@ -188,15 +188,16 @@ class Reduction(models.Model):
 
 class ScienceArticle(SearchModelMixin, models.Model):
     library = models.ForeignKey(CategoryLibrary, on_delete=models.CASCADE,
-                                verbose_name='Категория')
+                                verbose_name='Категория',
+                                null=True, blank=True)
     photo = models.ForeignKey(
         Attachment, on_delete=models.CASCADE,
         verbose_name='Изображение', related_name='photo_articles'
     )
     attachment = models.ForeignKey(
         Attachment, on_delete=models.CASCADE,
-        verbose_name='Приложение', blank=True,
-        null=True, default=None, related_name='attachment_articles'
+        verbose_name='Приложение', default=None, related_name='attachment_articles',
+
     )
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     date_of_issued = models.IntegerField(
@@ -252,7 +253,8 @@ class ScienceArticle(SearchModelMixin, models.Model):
 
 class Literature(SearchModelMixin, models.Model):
     library = models.ForeignKey(CategoryLibrary, on_delete=models.CASCADE,
-                                verbose_name='Категория')
+                                verbose_name='Категория',
+                                null=True, blank=True)
     photo = models.ForeignKey(
         Attachment, on_delete=models.CASCADE,
         verbose_name='Изображение'

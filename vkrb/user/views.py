@@ -7,7 +7,6 @@ from django_serializer.permissions import PermissionsModelMixin, PermissionsMixi
 from vkrb.core.models import User
 from vkrb.core.serializers import UserSerializer
 from vkrb.settings.models import SiteConfiguration
-from vkrb.user.forms import UserClientChangedForm
 from vkrb.user.models import UserChanged, StatusType
 
 
@@ -33,19 +32,26 @@ class UserView(DetailsView):
 
 
 class UserUpdateView(CreateView):
-    form_class = UserClientChangedForm
-    authorized_permission = (PermissionsModelMixin.Permission.R, PermissionsModelMixin.Permission.W)
+    class UserEditForm(forms.ModelForm):
+        class Meta:
+            model = User
+            fields = ('first_name',)
 
+    form_class = UserEditForm
     serializer = UserSerializer
 
     def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+        kwargs = {
+            'data': self.request.GET,
+            'instance': self.request.user
+        }
 
-    def post(self, request, *args, **kwargs):
-        super().post(request, *args, **kwargs)
-        return self.request.user
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+        return kwargs
 
 
 class UserUpdatePermsView(CsrfExemptMixin, PermissionsMixin, BaseView):

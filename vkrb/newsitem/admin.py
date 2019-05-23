@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from vkrb.client.push import NewNewsItemPush
 from vkrb.newsitem.forms import NewsItemAttachmentAdminForm, NewsForm
-from vkrb.newsitem.models import NewsItem, CategoryNewsItem
+from vkrb.newsitem.models import NewsItem, CategoryNewsItem, NewsKeyword
 
 
 class AttachmentsInline(SortableInlineAdminMixin, admin.TabularInline):
@@ -14,10 +14,10 @@ class AttachmentsInline(SortableInlineAdminMixin, admin.TabularInline):
 
 @admin.register(NewsItem)
 class NewsItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'image_tag',)
+    list_display = ('title', 'image_tag',)
     inlines = (AttachmentsInline,)
-    fields = ('category', 'title', 'text', 'image_tag', 'keywords', 'created')
-    list_filter = ('category',)
+    # fields = ('category', 'title', 'text', 'image_tag', 'keywords', 'created')
+    # list_filter = ('category',)
     search_fields = ('title', 'text')
     readonly_fields = ('image_tag',)
     form = NewsForm
@@ -28,7 +28,13 @@ class NewsItemAdmin(admin.ModelAdmin):
         #     NewNewsItemPush(obj).send()
 
 
-@admin.register(CategoryNewsItem)
-class CategoryNewsItemAdmin(SortableAdminMixin, admin.ModelAdmin):
+# @admin.register(CategoryNewsItem)
+# class CategoryNewsItemAdmin(SortableAdminMixin, admin.ModelAdmin):
+#     list_display = ('title',)
+#     search_fields = ('title',)
+
+@admin.register(NewsKeyword)
+class NewsKeywordAdmin(admin.ModelAdmin):
     list_display = ('title',)
-    search_fields = ('title',)
+
+

@@ -43,6 +43,17 @@ class CategoryNewsItem(models.Model):
         return self.title
 
 
+class NewsKeyword(models.Model):
+    class Meta:
+        verbose_name = 'Ключевое слово'
+        verbose_name_plural = 'Ключевые слова'
+
+    title = models.CharField(max_length=255, verbose_name='Название')
+
+    def __str__(self):
+        return self.title
+
+
 class NewsItem(SearchModelMixin, models.Model):
     class Meta:
         verbose_name = 'Новость'
@@ -53,15 +64,18 @@ class NewsItem(SearchModelMixin, models.Model):
     attachments = models.ManyToManyField(Attachment,
                                          through=AttachemntInNewsItem,
                                          verbose_name='Фото')
-    category = models.ForeignKey(CategoryNewsItem,
-                                 null=True,
-                                 default=None,
-                                 verbose_name='Категория',
-                                 on_delete=models.SET_NULL)
+    # category = models.ForeignKey(CategoryNewsItem,
+    #                              null=True,
+    #                              default=None,
+    #                              blank=True,
+    #                              verbose_name='Категория',
+    #                              on_delete=models.SET_NULL)
     created = models.DateTimeField(default=timezone.now,
                                    verbose_name='Дата публикации новости')
 
-    keywords = models.TextField(verbose_name='Ключевые слова', null=True, blank=True, help_text='Через пробел')
+    # keywords = models.TextField(verbose_name='Ключевые слова', null=True, blank=True, help_text='Через пробел')
+    keywords = models.ManyToManyField(NewsKeyword, verbose_name='Ключевые слова', null=True, blank=True,
+                                      )
 
     def __str__(self):
         return self.title
@@ -84,5 +98,5 @@ class NewsItem(SearchModelMixin, models.Model):
 
     def get_text_for_search_vector(self):
         return ' '.join(filter(lambda v: bool(v), [
-            self.title, self.text, self.keywords
+            self.title, self.text, self.keywords.all()
         ]))

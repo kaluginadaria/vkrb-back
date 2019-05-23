@@ -144,7 +144,7 @@ class ScienceArticleListView(ListView):
     unauthorized_permission = (PermissionsModelMixin.Permission.R,)
     paginator = LimitOffsetFullPaginator
     model = ScienceArticle
-    serializer = ShortScienceArticleSerializer
+    serializer = ScienceArticleSerializer
 
     def get_serializer_kwargs(self, obj, **kwargs):
         serializer_kwargs = super().get_serializer_kwargs(obj, **kwargs)

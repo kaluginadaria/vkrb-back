@@ -63,13 +63,13 @@ class CatalogItemAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 @admin.register(ScienceArticle)
 class ScienceArticleAdmin(admin.ModelAdmin):
-    list_display = ('library', 'title', 'keywords', 'image_tag')
+    list_display = ('title', 'author', 'photo')
     search_fields = ('title',)
     list_filter = ('library',)
+    fields = ('title', 'photo', 'author', 'body', 'date_of_issued', 'attachment')
 
 
 @admin.register(Literature)
 class LiteratureAdmin(admin.ModelAdmin):
-    list_display = ('library', 'title', 'keywords', 'image_tag')
+    list_display = ( 'title', 'image_tag')
     search_fields = ('title', 'keywords')
-    list_filter = ('library',)

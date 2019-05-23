@@ -1,6 +1,6 @@
 from django.urls import path
 from vkrb.newsitem.views import NewsListView, NewsGetView, CategoryView, CreatePDFView, FavoriteNewsCreateView, \
-    FavoriteNewsDeleteView
+    FavoriteNewsDeleteView, DiagramView
 
 app_name = 'newsitem'
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('create_pdf/', CreatePDFView.as_view()),
     path('add_favorite/', FavoriteNewsCreateView.as_view()),
     path('delete_favorite/', FavoriteNewsDeleteView.as_view()),
+    path('diagram/', DiagramView.as_view()),
 ]

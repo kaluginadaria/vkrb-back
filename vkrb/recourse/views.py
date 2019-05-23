@@ -13,9 +13,7 @@ from vkrb.favorites.forms import FavoriteForm
 from vkrb.favorites.models import FavoriteItem
 from vkrb.recourse.forms import RecourseForm, LikeRecourseForm
 from vkrb.recourse.models import Recourse, Specialty, RecourseLike
-from vkrb.recourse.serializers import (RecourseSerializer,
-                                           SpecialtySerializer,
-                                           RecourseLikeSerializer)
+from vkrb.recourse.serializers import RecourseSerializer
 
 
 class RecourseListView(EventMixin, ListView):
@@ -77,44 +75,44 @@ class RecourseCreateView(CreateView):
         return kwargs
 
 
-class SpecialtyListView(ListView):
-    model = Specialty
-    serializer = SpecialtySerializer
-    paginator = LimitOffsetFullPaginator
+# class SpecialtyListView(ListView):
+#     model = Specialty
+#     serializer = SpecialtySerializer
+#     paginator = LimitOffsetFullPaginator
+#
+#     def get_queryset(self):
+#         q = super().get_queryset()
+#         return q.order_by('order')
 
-    def get_queryset(self):
-        q = super().get_queryset()
-        return q.order_by('order')
+#
+# class LikeCreateView(CreateView):
+#     authorized_permission = (PermissionsModelMixin.Permission.R,
+#                              PermissionsModelMixin.Permission.W)
+#
+#     serializer = RecourseLikeSerializer
+#     form_class = LikeRecourseForm
+#
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user'] = self.request.user
+#         return kwargs
 
-
-class LikeCreateView(CreateView):
-    authorized_permission = (PermissionsModelMixin.Permission.R,
-                             PermissionsModelMixin.Permission.W)
-
-    serializer = RecourseLikeSerializer
-    form_class = LikeRecourseForm
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
-
-
-class LikeDeleteView(DeleteView):
-    class LikeForm(forms.Form):
-        recourse = forms.ModelChoiceField(Recourse.objects.all())
-
-    model = RecourseLike
-
-    def get_args_form(self):
-        return self.LikeForm
-
-    def get_object(self):
-        try:
-            return self.model.objects.get(user=self.request.user,
-                                          recourse=self.request_args['recourse'])
-        except self.model.DoesNotExist:
-            raise ServerError(ServerError.NOT_FOUND)
+#
+# class LikeDeleteView(DeleteView):
+#     class LikeForm(forms.Form):
+#         recourse = forms.ModelChoiceField(Recourse.objects.all())
+#
+#     model = RecourseLike
+#
+#     def get_args_form(self):
+#         return self.LikeForm
+#
+#     def get_object(self):
+#         try:
+#             return self.model.objects.get(user=self.request.user,
+#                                           recourse=self.request_args['recourse'])
+#         except self.model.DoesNotExist:
+#             raise ServerError(ServerError.NOT_FOUND)
 
 
 class CreatePDFView(ObjectMixin, PermissionsMixin, BaseView):

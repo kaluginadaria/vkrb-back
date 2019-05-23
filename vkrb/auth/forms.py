@@ -1,10 +1,8 @@
-import re
-
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
-from vkrb.auth.models import VerificationCode, AvailableDomains
+from vkrb.auth.models import VerificationCode
 from vkrb.core.models import User, PushToken
 from vkrb.core.utils import validate_phone_number
 
@@ -45,13 +43,13 @@ class ActivateResetForm(forms.ModelForm):
 
 
 class RegisterForm(forms.ModelForm):
-    phone = forms.CharField(max_length=20, validators=[phone_validator])
+    # phone = forms.CharField(max_length=20, validators=[phone_validator])
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        domain = re.search("@.+", email).group()[1:]
-        if not AvailableDomains.objects.filter(domain=domain):
-            raise ValidationError('К сожалению, ваш домен не включен в список доступных')
+        # domain = re.search("@.+", email).group()[1:]
+        # if not AvailableDomains.objects.filter(domain=domain):
+        #     raise ValidationError('К сожалению, ваш домен не включен в список доступных')
         if self.instance.pk and self.instance.is_active:
             raise ValidationError('Пользователь с таким email уже существует')
         return email
@@ -59,19 +57,18 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            'email', 'first_name', 'last_name',
-            'company', 'location', 'phone', 'password'
+            'email', 'first_name', 'password'
         )
 
     def save(self, commit=True):
         instance = super().save(commit=False)
         recreate = self.instance.pk is not None
-        instance.is_active = False
+        instance.is_active = True
         instance.set_password(instance.password)
         instance.save()
-        VerificationCode.objects.create_verification_code(
-            VerificationCode.Type.SIGNUP, instance, recreate=recreate
-        )
+        # VerificationCode.objects.create_verification_code(
+        #     VerificationCode.Type.SIGNUP, instance, recreate=recreate
+        # )
         return instance
 
 

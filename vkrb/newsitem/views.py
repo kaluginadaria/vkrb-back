@@ -1,12 +1,13 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Count
 from django_serializer.base_views import (ListView,
                                           DetailsView,
                                           BaseView,
                                           CreateView,
                                           DeleteView)
 from django_serializer.exceptions import ServerError
-from django_serializer.mixins import ObjectMixin, SerializerMixin
+from django_serializer.mixins import ObjectMixin, SerializerMixin, CsrfExemptMixin
 from django_serializer.permissions import (
     PermissionsModelMixin,
     PermissionsMixin,
@@ -16,7 +17,7 @@ from vkrb.core.mixins import EventMixin, LimitOffsetFullPaginator
 from vkrb.core.utils import get_absolute_bundle_urls, render_to_pdf
 from vkrb.favorites.forms import FavoriteForm
 from vkrb.favorites.models import FavoriteItem
-from vkrb.newsitem.models import NewsItem, CategoryNewsItem
+from vkrb.newsitem.models import NewsItem, CategoryNewsItem, NewsKeyword
 from vkrb.newsitem.serializers import (
     NewsItemSerializer,
     CategoryNewsItemSerializer,
@@ -25,8 +26,9 @@ from vkrb.newsitem.serializers import (
 
 class NewsListView(EventMixin, ListView):
     class CategoryForm(forms.Form):
-        category_id = forms.ModelChoiceField(CategoryNewsItem.objects.all(),
-                                             required=False)
+        # category_id = forms.ModelChoiceField(CategoryNewsItem.objects.all(),
+        #                                      required=False)
+        sort = forms.CharField(required=False)
 
     def get_serializer_kwargs(self, obj, **kwargs):
         serializer_kwargs = super().get_serializer_kwargs(obj, **kwargs)
@@ -34,10 +36,27 @@ class NewsListView(EventMixin, ListView):
         return serializer_kwargs
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        category = self.request_args.get('category_id')
-        if category:
-            return queryset.filter(category=category)
+        queryset = super().get_queryset().order_by('-created')
+        # category = self.request_args.get('category_id')
+        sort = self.request_args.get('sort')
+
+        # if category:
+        #     return queryset.filter(category=category)
+
+        if sort == 'popular':
+            content_type = ContentType.objects.get(model='newsitem')
+
+            sorted_items = FavoriteItem.objects.filter(content_type=content_type).values('object_id').annotate(
+                num_favorite=Count('object_id')).order_by('-num_favorite')
+            news_list = []
+            for item in sorted_items:
+                try:
+                    news_list.append(NewsItem.objects.get(id=item.get('object_id')))
+                except NewsItem.DoesNotExist:
+                    continue
+
+            return news_list
+
         return queryset
 
     section = 'news'
@@ -109,7 +128,6 @@ class FavoriteNewsCreateView(CreateView):
         return inst.content_object
 
 
-
 class FavoriteNewsDeleteView(SerializerMixin, DeleteView):
     authorized_permission = (PermissionsModelMixin.Permission.R,
                              PermissionsModelMixin.Permission.D)
@@ -142,3 +160,27 @@ class FavoriteNewsDeleteView(SerializerMixin, DeleteView):
             return NewsItem.objects.get(id=self.request_args['object_id'])
         except NewsItem.DoesNotExist:
             raise ServerError(ServerError.NOT_FOUND)
+
+
+class DiagramView(CsrfExemptMixin, PermissionsMixin, BaseView):
+    def get(self, request, *args, **kwargs):
+        self.check_r_permission(self.request.user)
+        limit = int(self.request.GET.get('limit'))
+        result = []
+        queryset = NewsItem.keywords.through.objects.values('newskeyword_id').annotate(
+            amount_keys=Count('newskeyword_id')).order_by('-amount_keys')
+        k = 0
+        for q in queryset:
+            try:
+                result.append(
+                    {
+                        'tag': NewsKeyword.objects.get(id=q.get('newskeyword_id')).title,
+                        'amount': q.get('amount_keys')
+                    }
+                )
+                k += 1
+                if k >= limit:
+                    break
+            except NewsKeyword.DoesNotExist:
+                pass
+        return result

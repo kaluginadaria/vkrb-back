@@ -5,15 +5,14 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.forms import BaseInlineFormSet
 
-from vkrb.client.push import NewRecourseAnswerPush
 from vkrb.recourse.models import Recourse, RecourseLike
 
 
 class RecourseForm(forms.ModelForm):
     class Meta:
         model = Recourse
-        fields = ['specialty', 'subject',
-                  'question', 'parent', 'gi', 'si']
+        fields = ['subject',
+                  'question', 'parent']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

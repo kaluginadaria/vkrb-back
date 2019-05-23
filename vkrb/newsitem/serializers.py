@@ -11,7 +11,7 @@ class NewsItemSerializer(ModelSerializer):
     photos = SerializerField(source='get_photos')
     main_photo = SerializerField(source='get_main_photo')
     is_fav = SerializerField(source='get_fav')
-    category = SerializerField(source='get_category')
+    # category = SerializerField(source='get_category')
     keywords = SerializerField(source='get_keywords')
 
 
@@ -19,10 +19,9 @@ class NewsItemSerializer(ModelSerializer):
         model = NewsItem
         exclude = ('keywords',)
 
-
-
     def get_keywords(self, obj):
-        return obj.keywords.split(' ')
+        keywords = obj.keywords.all()
+        return [kw.title for kw in keywords]
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

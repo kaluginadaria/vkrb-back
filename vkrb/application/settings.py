@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'django_celery_beat',
+    # 'django_celery_beat',
     'webpack_loader',
     'oauth2_provider',
     'corsheaders',
