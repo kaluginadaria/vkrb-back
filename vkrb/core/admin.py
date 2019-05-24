@@ -8,7 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ['email', 'first_name', 'last_name', 'expert', 'is_active', 'is_superuser', 'is_blocked']
+    list_display = ['email', 'first_name', 'last_name', 'is_active', 'is_superuser', 'is_blocked']
     form = UserChangeForm
     ordering = ('email',)
     readonly_fields = ('image_tag',)
@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
                                                   'first_name',
                                                   'last_name',
                                                   'age',
-                                                  'expert',
+
                                                   'phone',
                                                   'company',
                                                   'location',
@@ -40,4 +40,4 @@ class CustomUserAdmin(UserAdmin):
     )
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_blocked', 'groups')
     search_fields = ('first_name', 'last_name', 'email')
-    autocomplete_fields = ('expert',)
+

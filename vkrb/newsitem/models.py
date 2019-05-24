@@ -48,7 +48,7 @@ class NewsKeyword(models.Model):
         verbose_name = 'Ключевое слово'
         verbose_name_plural = 'Ключевые слова'
 
-    title = models.CharField(max_length=255, verbose_name='Название')
+    title = models.CharField(max_length=255, unique=True, verbose_name='Название')
 
     def __str__(self):
         return self.title
