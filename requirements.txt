@@ -1,4 +1,4 @@
-Django==2.0.2
+Django==2.2.13
 configparser==3.5.0
 gunicorn==19.7.1
 django-webpack-loader==0.6.0
